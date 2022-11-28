@@ -2,3 +2,4 @@
 cmake-build-debug
 
 src/node_modules
+src/.env
