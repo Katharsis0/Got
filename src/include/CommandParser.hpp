@@ -2,8 +2,8 @@
 // Created by katharsis on 11/14/22.
 //
 
-#ifndef CLI_COMMANDPARSER_H
-#define CLI_COMMANDPARSER_H
+#ifndef CLI_COMMANDPARSER_HPP
+#define CLI_COMMANDPARSER_HPP
 
 #include <algorithm>
 #include <string>
@@ -37,4 +37,4 @@ class CommandParser {
 };
 
 
-#endif //CLI_COMMANDPARSER_H
+#endif //CLI_COMMANDPARSER_HPP

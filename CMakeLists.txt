@@ -4,4 +4,6 @@ project(CLI)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(CLI
-        main.cpp CommandParser.cpp CommandParser.h)
+        main.cpp
+        src/client/CommandParser.cpp
+        src/include/CommandParser.hpp)

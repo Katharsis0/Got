@@ -6,7 +6,7 @@
 #include <bits/stdc++.h>
 #include <experimental/filesystem>
 
-#include "CommandParser.h"
+#include "src/include/CommandParser.hpp"
 
 ///Se compila con g++ main.cpp CommandParser.cpp -o got -lstdc++fs en la terminal
 

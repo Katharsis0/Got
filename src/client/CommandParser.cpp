@@ -2,8 +2,8 @@
 // Created by katharsis on 11/14/22.
 //
 
-#include "CommandParser.h"
-///Util
+#include "../include/CommandParser.hpp"
+// Util
 CommandParser::CommandParser(int &argc, char **argv) {
     if(argc>20){
         throw std::runtime_error("Too much parameters!\n\n"
