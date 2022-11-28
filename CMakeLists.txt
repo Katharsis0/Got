@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(CLI
         main.cpp
-        src/client/CommandParser.cpp
-        src/include/CommandParser.hpp)
+        client/CommandParser.cpp
+        include/CommandParser.hpp)
