@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,69 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Developer {
+  id         Int          @id @default(autoincrement())
+  name       String
+  email      String
+  Repository Repository[]
+}
+
+model Repository {
+  id          Int       @id @default(autoincrement())
+  name        String
+  url         String
+  description String
+  developer   Developer @relation(fields: [developerId], references: [id])
+  developerId Int
+}
+
+model Commit {
+  id           Int       @id @default(autoincrement())
+  title        String
+  message      String
+  content      File      @relation(fields: [fileId], references: [id])
+  size         Int
+  authoredDate DateTime  @default(now())
+  commitedDate DateTime  @updatedAt
+  deletedAt    DateTime? @map("deleted_at")
+  fileId       Int
+}
+
+model Reference {
+  id       Int     @unique
+  name     String
+  inRemote Boolean @default(false)
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  name      String
+  path      String
+  size      Int
+  extension String
+  Commit    Commit[]
+}
+
+model Branch {
+  id       Int     @id @default(autoincrement())
+  name     String
+  inRemote Boolean @default(false)
+}
+
+model FileModification {
+  id        Int    @id @default(autoincrement())
+  status    String
+  additions Int
+  deletions Int
+  changes   Int
+  patch     String
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
 }
