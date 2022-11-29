@@ -3,5 +3,5 @@ project(CLI)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(CLI
-        main.cpp CommandParser.cpp CommandParser.h)
+add_executable(
+        main.cpp CommandParser.cpp CommandParser.h json.hpp Huffman.cpp)

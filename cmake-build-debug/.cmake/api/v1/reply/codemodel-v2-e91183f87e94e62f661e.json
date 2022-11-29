@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "CLI::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-CLI-Debug-424b46dff828e22f2168.json",
-					"name" : "CLI",
+					"id" : "main.cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main.cpp-Debug-fdd6ab626fff3b94ec5a.json",
+					"name" : "main.cpp",
 					"projectIndex" : 0
 				}
 			]

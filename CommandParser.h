@@ -10,7 +10,10 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include "json.hpp"
 
+//namespace json
+using json = nlohmann::json;
 
 class CommandParser {
     public:
@@ -35,6 +38,8 @@ class CommandParser {
     private:
         std::vector<std::string> tokens;
 };
+
+
 
 
 #endif //CLI_COMMANDPARSER_H

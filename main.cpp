@@ -10,6 +10,8 @@
 
 ///Se compila con g++ main.cpp CommandParser.cpp -o got -lstdc++fs en la terminal
 
+
+
 namespace fs= std::experimental::filesystem;
 
 int main(int argc, char* argv[]){
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]){
         ///Si no se especifican archivos se agregan todos los archivos al Pending2Commit.txt.
         if(flag.empty() && fileNames.empty()){
             printf("Added all local files to the repository.\n\n");
-            std::string path= "/home/katharsis/CLionProjects/CLI";
+            std::string path= std::experimental::filesystem::current_path();
             std::ofstream outFile("pending2commit.txt");
             for(const auto& entry : fs::directory_iterator(path)){
                 outFile << entry.path() << std::endl;
@@ -47,7 +49,7 @@ int main(int argc, char* argv[]){
         if(!fileNames.empty() && flag.empty()){
             printf("Files added to the repository: %s\n\n",fileNames.c_str());
             std::string s="";
-            std::string path= "/home/katharsis/CLionProjects/CLI";
+            std::string path= std::experimental::filesystem::current_path();
             std::ofstream outFile("pending2commit.txt");
             ///Escribe los archivos especificados separados por coma en el .txt
             for(auto x: fileNames){
@@ -62,7 +64,6 @@ int main(int argc, char* argv[]){
             outFile <<s << std::endl;
             outFile.close();
         }
-
     }
 
     return 0;

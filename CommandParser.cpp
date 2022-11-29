@@ -3,6 +3,7 @@
 //
 
 #include "CommandParser.h"
+
 ///Util
 CommandParser::CommandParser(int &argc, char **argv) {
     if(argc>20){
@@ -54,11 +55,30 @@ void CommandParser::helpOption() {
 }
 
 void CommandParser::initOption(std::string repoName){
-    //ToDo: Submitear al server el repo
+
     std::ofstream outFile(".gotignore");
-    //ToDo: Agregar informacion al gotignore (por el momento escribe el nombre del repo)
-    outFile << repoName.c_str() << std::endl;
+    outFile << "./gotignore" << std::endl;
     outFile.close();
+
+    std::ofstream repo("repositorio.json");
+    json info;
+    info["nameRepo"] = repoName;
+    info["version"] = {};
+    repo << info;
+    repo.close();
+
+    std::ofstream add("add.json");
+    json ad;
+    ad["Lista"] = {};
+    add << ad;
+    add.close();
+
+    std::ofstream file ("send.json");
+    json j;
+    j["name"] = repoName;
+    file << j;
+    file.close();
+    //ToDo: post request
     printf("Repository initialized successfully. Repository name: %s\n\n", repoName.c_str());
 }
 

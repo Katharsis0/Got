@@ -41,47 +41,41 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = /home/katharsis/CLionProjects/CLI/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target CLI
+# Object build statements for EXECUTABLE target main.cpp
 
 
 #############################################
-# Order-only phony target for CLI
+# Order-only phony target for main.cpp
 
-build cmake_object_order_depends_target_CLI: phony || CMakeFiles/CLI.dir
+build cmake_object_order_depends_target_main.cpp: phony || CMakeFiles/main.cpp.dir
 
-build CMakeFiles/CLI.dir/main.cpp.o: CXX_COMPILER__CLI_Debug /home/katharsis/CLionProjects/CLI/main.cpp || cmake_object_order_depends_target_CLI
-  DEP_FILE = CMakeFiles/CLI.dir/main.cpp.o.d
+build CMakeFiles/main.cpp.dir/CommandParser.cpp.o: CXX_COMPILER__main.2ecpp_Debug /home/katharsis/CLionProjects/CLI/CommandParser.cpp || cmake_object_order_depends_target_main.cpp
+  DEP_FILE = CMakeFiles/main.cpp.dir/CommandParser.cpp.o.d
   FLAGS = -g
-  OBJECT_DIR = CMakeFiles/CLI.dir
-  OBJECT_FILE_DIR = CMakeFiles/CLI.dir
+  OBJECT_DIR = CMakeFiles/main.cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/main.cpp.dir
 
-build CMakeFiles/CLI.dir/CommandParser.cpp.o: CXX_COMPILER__CLI_Debug /home/katharsis/CLionProjects/CLI/CommandParser.cpp || cmake_object_order_depends_target_CLI
-  DEP_FILE = CMakeFiles/CLI.dir/CommandParser.cpp.o.d
+build CMakeFiles/main.cpp.dir/Huffman.cpp.o: CXX_COMPILER__main.2ecpp_Debug /home/katharsis/CLionProjects/CLI/Huffman.cpp || cmake_object_order_depends_target_main.cpp
+  DEP_FILE = CMakeFiles/main.cpp.dir/Huffman.cpp.o.d
   FLAGS = -g
-  OBJECT_DIR = CMakeFiles/CLI.dir
-  OBJECT_FILE_DIR = CMakeFiles/CLI.dir
-
-build CMakeFiles/CLI.dir/ProgramOptions.cpp.o: CXX_COMPILER__CLI_Debug /home/katharsis/CLionProjects/CLI/ProgramOptions.cpp || cmake_object_order_depends_target_CLI
-  DEP_FILE = CMakeFiles/CLI.dir/ProgramOptions.cpp.o.d
-  FLAGS = -g
-  OBJECT_DIR = CMakeFiles/CLI.dir
-  OBJECT_FILE_DIR = CMakeFiles/CLI.dir
+  OBJECT_DIR = CMakeFiles/main.cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/main.cpp.dir
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target CLI
+# Link build statements for EXECUTABLE target main.cpp
 
 
 #############################################
-# Link the executable CLI
+# Link the executable main.cpp
 
-build CLI: CXX_EXECUTABLE_LINKER__CLI_Debug CMakeFiles/CLI.dir/main.cpp.o CMakeFiles/CLI.dir/CommandParser.cpp.o CMakeFiles/CLI.dir/ProgramOptions.cpp.o
+build main.cpp: CXX_EXECUTABLE_LINKER__main.2ecpp_Debug CMakeFiles/main.cpp.dir/CommandParser.cpp.o CMakeFiles/main.cpp.dir/Huffman.cpp.o
   FLAGS = -g
-  OBJECT_DIR = CMakeFiles/CLI.dir
+  OBJECT_DIR = CMakeFiles/main.cpp.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = CLI
-  TARGET_PDB = CLI.dbg
+  TARGET_FILE = main.cpp
+  TARGET_PDB = main.cpp.dbg
 
 
 #############################################
@@ -118,7 +112,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/katharsis/CLionProjects/CLI/cmake-build-debug
 
-build all: phony CLI
+build all: phony main.cpp
 
 # =============================================================================
 # Built-in targets
