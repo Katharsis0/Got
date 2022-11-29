@@ -31,10 +31,12 @@ bool CommandParser::optionExists(const std::string &option) const {
 ///Options
 void CommandParser::helpOption() {
     printf("These are the commands implemented by Got:\n");
-        printf("\e[1mgot init <-n> <name>\e[0m\n  Initializes the repository in the server.\n  "
+
+        printf("\e[1mgot help\e[0m\n  Displays the command information.\n\n");
+
+        printf("\e[1mgot init -n <name>\e[0m\n  Initializes the repository in the server.\n  "
                "Generates a .gotignore file where you can specify\n  "
                "which files you want to exclude from the repository.\n\n");
-        printf("\e[1mgot help\e[0m\n  Displays the command information.\n\n");
 
         printf("\e[1mgot add <-fns> <filename(s)>\e[0m\n  Allows to add files to the repository.\n  "
                "You can use it either without the flag parameter to add all local files or specify the filenames\n  "
@@ -52,10 +54,10 @@ void CommandParser::helpOption() {
         printf("\e[1mgot rollback -fn <filename> -c <commit>\e[0m\n  "
                "Reverts the changes made to a file to the version of the specified past commit.\n\n");
 
-        printf("\e[1mgot reset <filename>\e[0m\n  "
+        printf("\e[1mgot reset -fn <filename>\e[0m\n  "
                "Reverts the local changes to the last commit.\n\n");
 
-        printf("\e[1mgot sync <file>\e[0m\n  "
+        printf("\e[1mgot sync -fn <filename>\e[0m\n  "
                "Synchronizes the specified file with its version in the global repository.\n\n");
 }
 
@@ -233,7 +235,7 @@ void CommandParser::rollbackOption(const std::string commit, const std::string f
     outfile.close();
 }
 
-void CommandParser::syncOption(string& file){
+void CommandParser::syncOption(string file){
 
     std::ifstream repo("repositorio.json");
     json r;

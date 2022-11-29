@@ -33,13 +33,10 @@ class CommandParser {
         static void statusOption();
         static void rollbackOption(const std::string commit, const std::string filename);
         static void resetOption(std::string filename);
-        static void syncOption(std::string& filename);
+        static void syncOption(std::string filename);
 
     private:
         std::vector<std::string> tokens;
 };
-
-
-
 
 #endif //CLI_COMMANDPARSER_H

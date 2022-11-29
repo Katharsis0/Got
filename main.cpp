@@ -100,9 +100,25 @@ int main(int argc, char* argv[]){
         else{
             printf("Error: A file and a past commit version must be specified in order to rollback. Please try again.");
         }
-
+    }
+    if(cmd.optionExists("reset")){
+        const std::string &fileName = cmd.getOption("-fn");
+        if(!fileName.empty()){
+            CommandParser::resetOption(fileName);
+        }
+        else{
+            printf("Error: A file to reset must be specified.");
+        }
+    }
+    if(cmd.optionExists("sync")){
+        const std::string &fileName = cmd.getOption("-fn");
+        if(!fileName.empty()){
+            CommandParser::syncOption(fileName);
+        }
+        else{
+            printf("Error: A file must be specified in order to sync it with the global repository.");
+        }
 
     }
     return 0;
 }
-
