@@ -10,7 +10,8 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include "json.hpp"
+#include "API.h"
+
 
 //namespace json
 using json = nlohmann::json;
@@ -29,11 +30,10 @@ class CommandParser {
         static void addOption(std::string files);
         static void commitOption(std::string message);
         static void statusOption(std::string filename);
-        static void rollbackOption(std::string filename, int commit);
+        static void statusOption();
+        static void rollbackOption(const std::string commit, const std::string filename);
         static void resetOption(std::string filename);
-        static void syncOption(std::string filename);
-
-
+        static void syncOption(std::string& filename);
 
     private:
         std::vector<std::string> tokens;
