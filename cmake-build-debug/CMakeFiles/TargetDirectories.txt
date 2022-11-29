@@ -1,3 +1,0 @@
-/home/katharsis/CLionProjects/CLI/cmake-build-debug/CMakeFiles/got.dir
-/home/katharsis/CLionProjects/CLI/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/katharsis/CLionProjects/CLI/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,4 +1,21 @@
-/snap/clion/209/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/209/bin/ninja/linux/ninja -G Ninja -S /home/katharsis/CLionProjects/CLI -B /home/katharsis/CLionProjects/CLI/cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: /home/katharsis/CLionProjects/CLI/cmake-build-debug
+/home/vivallo/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/vivallo/Development/Got -B /home/vivallo/Development/Got/cmake-build-debug
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "7.68.0")  
+CMake Error at CMakeLists.txt:13 (target_link_libraries):
+  Cannot specify link libraries for target "got" which is not built by this
+  project.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/vivallo/Development/Got/cmake-build-debug/CMakeFiles/CMakeOutput.log".

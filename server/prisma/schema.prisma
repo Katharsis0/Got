@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Branch {
+  id       Int     @id @default(autoincrement())
+  name     String
+  inRemote Boolean @default(false)
+}
+
+model Commit {
+  id           Int       @id @default(autoincrement())
+  title        String
+  message      String
+  size         Int
+  authoredDate DateTime  @default(now())
+  commitedDate DateTime
+  deleted_at   DateTime?
+  fileId       Int
+  File         File      @relation(fields: [fileId], references: [id])
+
+  @@index([fileId], map: "Commit_fileId_fkey")
+}
+
+model Developer {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  name      String
+  path      String
+  size      Int
+  extension String
+  Commit    Commit[]
+}
+
+model FileModification {
+  id        Int    @id @default(autoincrement())
+  status    String
+  additions Int
+  deletions Int
+  changes   Int
+  patch     String
+}
+
+model Repository {
+  id    Int    @id @default(autoincrement())
+  name  String
+}

@@ -4,7 +4,7 @@ project(CLI)
 set(CMAKE_CXX_STANDARD 14)
 find_package(CURL REQUIRED)
 add_executable(
-        main.cpp CommandParser.cpp CommandParser.h json.hpp API.h API.cpp)
+        main.cpp src/CommandParser.cpp include/CommandParser.h include/json.hpp include/API.h src/API.cpp)
 
 include_directories(${CURL_INCLUDE_DIR})
 
