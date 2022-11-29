@@ -41,7 +41,7 @@ const std::string& CommandParser::getOption(const std::string &option) const {
 bool CommandParser::optionExists(const std::string &option) const {
     return std::find(this->tokens.begin(), this->tokens.end(), option)!=this->tokens.end();
 }
-
+//SHA-256 Secure Hash Algorithm CON UN VALOR DEL HASH DE 256
 
 std::string getText(const std::string& url){
 
