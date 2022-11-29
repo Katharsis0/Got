@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/main.cpp.dir/CommandParser.cpp.o CMakeFiles/main.cpp.dir/Huffman.cpp.o -o main.cpp 

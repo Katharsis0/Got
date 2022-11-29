@@ -43,17 +43,71 @@ bool CommandParser::optionExists(const std::string &option) const {
 }
 
 
-json getLastCommit(string file){
+std::string getText(const std::string& url){
 
-    std::ifstream repo("repositorio.json");
-    json r;
-    r << repo;
-    repo.close();
+    std::ifstream file;
+    file.open (url);
 
-    return get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/lastcommit");
+    std::string text;
+    std::string temp;
+
+    while (std::getline(file, temp)){
+        text += temp;
+    }
+
+    file.close();
+
+    return text;
 
 }
 
+string post_request(const string& url ,const string& path2file)
+{
+    const string field_divider="&";
+    stringstream result;
+    try
+    {
+        // This block responsible for reading in the fastest way media file
+        //      and prepare it for sending on API server
+        ifstream is(path2file);
+        is.seekg(0, ios_base::end);
+        size_t size=is.tellg();
+        is.seekg(0, ios_base::beg);
+        vector<char> v(size/sizeof(char));
+        is.read((char*) &v[0], size);
+        is.close();
+        string body(v.begin(), v.end());
+
+        // Initialization
+        curlpp::Cleanup cleaner;
+        curlpp::Easy request;
+        list< string > headers;
+        headers.push_back("Content-Type: application/json");
+        headers.push_back("User-Agent: curl/7.77.7");
+
+        using namespace curlpp::Options;
+
+        request.setOpt(new Verbose(true));
+        request.setOpt(new HttpHeader(headers));
+        request.setOpt(new Url(url));
+        request.setOpt(new PostFields(body));
+        request.setOpt(new PostFieldSize(body.length()));
+        request.setOpt(new curlpp::options::SslEngineDefault());
+        request.setOpt(WriteStream(&result));
+        request.perform();
+    }
+    catch ( curlpp::LogicError & e )
+    {
+        cout << e.what() << endl;
+    }
+    catch ( curlpp::RuntimeError & e )
+    {
+        cout << e.what() << endl;
+    }
+
+    return (result.str());
+
+}
 
 bool verificarVersion(const string& file){
     int versionGlobal = getLastCommit(file)[0]["MAX(id)"];
@@ -113,6 +167,17 @@ json get_request(const string& url)
 
 }
 
+json getLastCommit(string file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    return get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/lastcommit");
+
+}
+
 int verificarArchivo(const string& file){
 
     std::ifstream repo("repositorio.json");
@@ -127,9 +192,103 @@ int verificarArchivo(const string& file){
 }
 
 
+json getID(int id){
 
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    return get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + to_string(id));
+
+}
 
 ///Options
+void CommandParser::rollbackOption (const string& commit, const string& file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    string get = "http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/" + commit;
+
+    json commite = get_request(get);
+    int id = commite[0]["id"];
+
+    json rest = get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + to_string(id) + "/getData")[0];
+
+    std::ofstream outfile (rest["archivo"]);
+
+    string sTabla = rest["contenido"];
+
+    json tabla = json::parse(sTabla);
+
+    unordered_map<string, string> mapaDesdeJson = jsonHaciaTabla(tabla);
+
+    string texto = descomprimirTabla(mapaDesdeJson, rest["comprimido"]);
+
+    outfile << texto;
+
+    outfile.close();
+}
+
+void CommandParser::resetOption(const string& file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    json lastCommitVersionFile = getID(getLastCommit(file)[0]["MAX(id)"]);
+
+    int id = lastCommitVersionFile[0]["id"];
+
+    json rest = get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + to_string(id) + "/getData")[0];
+
+    std::ofstream outfile (rest["archivo"]);
+
+    string sTabla = rest["contenido"];
+
+    json tabla = json::parse(sTabla);
+
+    unordered_map<string, string> mapaDesdeJson = jsonHaciaTabla(tabla);
+
+    string texto = descomprimirTabla(mapaDesdeJson, rest["comprimido"]);
+
+    outfile << texto;
+
+    outfile.close();
+
+}
+
+void CommandParser::statusOption(){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    json lastID = getID(get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/lastID")[0]["MAX(id)"]);
+    string commit = lastID[0]["commit"];
+
+    cout << get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + commit + "/status") << "\n";
+
+
+}
+
+void CommandParser::statusOption(string file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    cout << get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/statusFile") << "\n";
+
+}
+
+
 void CommandParser::helpOption() {
     printf("These are the commands implemented by Got:\n");
         printf("\e[1mgot init <-n> <name>\e[0m\n  Initializes the repository in the server.\n  "
@@ -277,9 +436,6 @@ void CommandParser::commitOption (std::string commit){
 
 }
 
-void CommandParser::commitOption(std::string fileName){
-
-}
 
 
 
