@@ -1,4 +1,4 @@
-# Install script for directory: /home/katharsis/CLionProjects/CLI
+# Install script for directory: /home/felipevargas/CLI/Got
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/katharsis/CLionProjects/CLI/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/felipevargas/CLI/Got/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

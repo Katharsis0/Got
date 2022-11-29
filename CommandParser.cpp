@@ -1,9 +1,23 @@
-//
-// Created by katharsis on 11/14/22.
-//
+#include <iostream>
+#include <cstdlib>
+#include <sstream>
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Easy.hpp>
+#include <curlpp/Options.hpp>
+#include <curlpp/Exception.hpp>
+#include <curlpp/Infos.hpp>
+#include <fstream>
+#include "json.hpp"
+#include <filesystem>
+#include <experimental/filesystem>
+#include "sha256.h"
+#include <unordered_map>
+#include <queue>
+#include "json.hpp"
 
 #include "CommandParser.h"
-
+std::string setPath;
+using namespace std;
 ///Util
 CommandParser::CommandParser(int &argc, char **argv) {
     if(argc>20){
@@ -27,6 +41,93 @@ const std::string& CommandParser::getOption(const std::string &option) const {
 bool CommandParser::optionExists(const std::string &option) const {
     return std::find(this->tokens.begin(), this->tokens.end(), option)!=this->tokens.end();
 }
+
+
+json getLastCommit(string file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    return get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/lastcommit");
+
+}
+
+
+bool verificarVersion(const string& file){
+    int versionGlobal = getLastCommit(file)[0]["MAX(id)"];
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    int versionLocal;
+    for (auto &it : r["version"]){
+        cout << file << "\n";
+        cout << (string)it["name"] << "\n";
+        if (file == ((string)it["name"])){
+            versionLocal = (int)it["version"];
+            cout << "VERSION local: " << versionLocal;
+        }
+    }
+
+    if((versionLocal != 0) && (versionLocal == versionGlobal)){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+json get_request(const string& url)
+{
+    try
+    {
+        curlpp::Cleanup cleaner;
+        curlpp::Easy request;
+
+        json resp;
+
+        using namespace curlpp::Options;
+
+        request.setOpt(Verbose(true));
+        request.setOpt(Url(url));
+
+        std::ostringstream json ;
+        request.setOpt(new curlpp::options::WriteStream(&json));
+
+        request.perform();
+
+        resp = json::parse(json.str());
+
+        return resp;
+    }
+
+    catch ( curlpp::LogicError & e ) {
+        std::cout << e.what() << std::endl;
+    }
+    catch ( curlpp::RuntimeError & e ) {
+        std::cout << e.what() << std::endl;
+    }
+
+}
+
+int verificarArchivo(const string& file){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    string mensaje = "EXISTS(SELECT 1 FROM " + (string)r["nameRepo"] +"_versiones WHERE archivo = '" + file + "')";
+
+    return (get_request("http://127.0.0.1:5000/" + (string)r["nameRepo"] + "/" + file + "/exist"))[0][mensaje];
+
+}
+
+
+
 
 ///Options
 void CommandParser::helpOption() {
@@ -82,10 +183,103 @@ void CommandParser::initOption(std::string repoName){
     printf("Repository initialized successfully. Repository name: %s\n\n", repoName.c_str());
 }
 
-void CommandParser::addOption(std::string fileName){
+
+void CommandParser::commitOption (std::string commit){
+
+    std::ifstream repo("repositorio.json");
+    json r;
+    r << repo;
+    repo.close();
+
+    std::ifstream add("add.json");
+    json j;
+    j << add;
+    add.close();
+
+    for (auto &it : j["Lista"]) {
+        if (verificarArchivo(it["name"]) == 1){
+
+            if(verificarVersion(it["name"]) == 1){
+
+                std::ofstream file("send.json");
+                json jl;
+                jl["name"] = it["name"];
+                jl["nameRepo"] = r["nameRepo"];
+                jl["commit"] = commit;
+
+                Node* HuffmanTree = crearArbolDeHuffman(getText(it["name"]));
+                //TABLA DEL ÁRBOL
+                unordered_map<char, string> huffmanCode;
+                unordered_map<char, string> huffmanTable = crearTabla(HuffmanTree, "", huffmanCode);
+                //COMPRIMIDO
+                string textoComprimido = comprimirTabla(huffmanTable, getText(it["name"]));
+                //tabla a json
+                json t = tablaHaciaJson(huffmanTable);
+
+                jl["contenido"] = t.dump();
+                jl["comprimido"] = textoComprimido;
+
+                file << jl;
+                file.close();
+                post_request("http://127.0.0.1:5000/add", "send.json");
+
+                for (auto &i : r["version"]) {
+                    if (it["name"] == i["name"]) {
+                        i["version"] = getLastCommit(i["name"])[0]["MAX(id)"];
+                    }
+                }
+
+            }else{
+                cout << "El archivo " << it["name"] << " no está en su ultimo commit" << endl;
+            }
+
+        }
+        else{
+
+            std::ofstream file("send.json");
+            json jk;
+            jk["name"] = it["name"];
+            jk["nameRepo"] = r["nameRepo"];
+            jk["commit"] = commit;
+
+            Node* HuffmanTree = crearArbolDeHuffman(getText(it["name"]));
+            //TABLA DEL ÁRBOL
+            unordered_map<char, string> huffmanCode;
+            unordered_map<char, string> huffmanTable = crearTabla(HuffmanTree, "", huffmanCode);
+            //COMPRIMIDO
+            string textoComprimido = comprimirTabla(huffmanTable, getText(it["name"]));
+            //tabla a json
+            json t = tablaHaciaJson(huffmanTable);
+
+            jk["contenido"] = t.dump();
+            jk["comprimido"] = textoComprimido;
+
+            file << jk;
+            file.close();
+            post_request("http://127.0.0.1:5000/add", "send.json");
+
+            r["version"] += {{"name" , it["name"]}, {"version", getLastCommit(it["name"])[0]["MAX(id)"]}};
+
+        }
+
+    }
+
+    std::ofstream addi("add.json");
+    json ad;
+    ad["Lista"] = {};
+    addi << ad;
+    add.close();
+
+    std::ofstream repos("repositorio.json");
+    repos << r;
+    repos.close();
+
 
 }
 
+void CommandParser::commitOption(std::string fileName){
+
+}
 
 
 

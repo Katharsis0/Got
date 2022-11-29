@@ -5,7 +5,22 @@
 #include <fstream>
 #include <bits/stdc++.h>
 #include <experimental/filesystem>
-
+#include <iostream>
+#include <cstdlib>
+#include <sstream>
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Easy.hpp>
+#include <curlpp/Options.hpp>
+#include <curlpp/Exception.hpp>
+#include <curlpp/Infos.hpp>
+#include <fstream>
+#include "json.hpp"
+#include <filesystem>
+#include <experimental/filesystem>
+#include "sha256.h"
+#include <unordered_map>
+#include <queue>
+#include "json.hpp"
 #include "CommandParser.h"
 
 ///Se compila con g++ main.cpp CommandParser.cpp -o got -lstdc++fs en la terminal
